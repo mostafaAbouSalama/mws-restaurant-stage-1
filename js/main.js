@@ -72,6 +72,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  * Initialize leaflet map, called from HTML.
  */
 initMap = () => {
+  updateRestaurants();
   self.newMap = L.map('map', {
         center: [40.722216, -73.987501],
         zoom: 11,
@@ -86,7 +87,6 @@ initMap = () => {
     id: 'mapbox.streets'
   }).addTo(newMap);
 
-  updateRestaurants();
 }
 
 /**
@@ -152,7 +152,7 @@ createRestaurantHTML = (restaurant) => {
   image.alt = `Sample image of ${restaurant.name} restaurant`;
   li.append(image);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 
@@ -189,20 +189,15 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 }
 
 // Registering the service worker
-if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('/sw.js')
-  .then(function(reg) {
-    if (reg.installing) {
-      reg.installing.addEventListener("statechange", function() {
-        if (reg.installing.state == "installed") {
-          console.log("sw successfully installed");
-          return;
-        }
-      });
-    }
-  })
-  .catch(function(error) {
-    console.log("sw installation failed due to " + error);
-    return;
-  })
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+    .then(function(reg) {
+      console.log("Installation successful");
+      console.log(reg.scope);
+    })
+    .catch(function(error) {
+      console.log("Installation failed due to ", error);
+    })
+  });
 }
