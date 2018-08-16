@@ -334,6 +334,11 @@ nav h1 a {
 	width: 100%;
 }
 
+#width-limit-box {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 #restaurant-container {
 	padding: 20px;
 	width: 100%;
